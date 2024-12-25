@@ -6,6 +6,8 @@ from datetime import datetime
 
 API_KEY = os.environ["NEOCITIES_API_KEY"]
 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 
 def upload_strings(files: dict[str, bytes | str]):
     """
