@@ -57,7 +57,7 @@ with open_log("w") as f:
     f.writelines(lines)
 
 
-lines = "\n".join([f"<li>{line}</li>" for line in open_log().read().strip().split("\n")])
+lines = "\n".join([f"<li>{line}</li>" for line in open_log().read().strip().split("\n")[:100]])
 
 script = """
     <script>
