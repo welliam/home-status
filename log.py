@@ -4,7 +4,7 @@ import neocities
 from datetime import datetime
 
 
-API_KEY = os.environ["NEOCITIES_API_KEY"]
+API_KEY = os.environ.get("NEOCITIES_API_KEY")
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -37,9 +37,11 @@ def upload_strings(files: dict[str, bytes | str]):
         (file.name, neocities_path) for neocities_path, file in file_objects.items()
     ]
 
-    client = neocities.NeoCities(api_key=API_KEY)
-    looped = False
-    client.upload(*file_list)
+    if API_KEY:
+        client = neocities.NeoCities(api_key=API_KEY)
+        client.upload(*file_list)
+    else:
+        print(file_list)
     # for index, chunk in enumerate(chunkify(list(file_list), CHUNK_SIZE)):
     #     logging.info(f"Uploading chunk of size {len(chunk)}")
     #     client.upload(*chunk)
@@ -70,6 +72,10 @@ script = """
 html = f"""
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Home status</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
   <body>
     <ul class="list">{lines}</ul>
     {script}
@@ -77,4 +83,7 @@ html = f"""
 </html>
 """
 
-upload_strings({"home-status.html": html})
+if API_KEY:
+    upload_strings({"home-status.html": html})
+else:
+    print(html)
