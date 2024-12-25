@@ -8,6 +8,9 @@ API_KEY = os.environ["NEOCITIES_API_KEY"]
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+def open_log(mode="r"):
+    return open(os.path.join(__location__, "log.txt"), mode=mode)
+
 
 def upload_strings(files: dict[str, bytes | str]):
     """
@@ -46,15 +49,15 @@ def upload_strings(files: dict[str, bytes | str]):
 
 now = datetime.now()
 
-lines = open("log.txt").read()
+lines = open_log().read()
 
-with open("log.txt", "w") as f:
+with open_log("w") as f:
     f.write(str(now))
     f.write("\n")
     f.writelines(lines)
 
 
-lines = "\n".join([f"<li>{line}</li>" for line in open("log.txt").read().strip().split("\n")])
+lines = "\n".join([f"<li>{line}</li>" for line in open_log().read().strip().split("\n")])
 
 script = """
     <script>
